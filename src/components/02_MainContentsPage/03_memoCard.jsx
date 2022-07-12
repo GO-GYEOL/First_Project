@@ -9,7 +9,7 @@ const Card = styled.div`
 
 const MemoCard = ({ card, index }) => {
   return (
-    <Draggable draggableId={card.id} index={index}>
+    <Draggable key={card.id} draggableId={card.id} index={index}>
       {(provided) => (
         <Card
           ref={provided.innerRef}

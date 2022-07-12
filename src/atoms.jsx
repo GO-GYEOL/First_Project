@@ -3,28 +3,32 @@ import { atom } from "recoil";
 export const memoState = atom({
   key: "memo",
   default: [
-    //boards
     {
-      to_do: [
-        // cards
+      "to_do": [
         {
-          id: "1",
+          id: "1asd",
           color: "pink",
           title: "저녁에 놀사람",
           contents: "이따 집앞 카페에서 모이자 6시!",
         },
         {
-          id: "2",
+          id: "2dd",
           color: "red",
           title: "과제 마치기",
           contents: "세계사 교양 273쪽까지 읽고 레포트 제출하기",
         },
+        {
+          id: "3qwed",
+          color: "pink",
+          title: "밤에 놀사람",
+          contents: "이따 집앞 카페에서 모이자 6시!",
+        },
       ],
     },
     {
-      doing: [
+      "doing": [
         {
-          id: "3",
+          id: "4av",
           color: "pink",
           title: "운동하기",
           contents: "팔굽혀펴기 50회",
@@ -32,9 +36,9 @@ export const memoState = atom({
       ],
     },
     {
-      done: [
+      "done": [
         {
-          id: "4",
+          id: "5azx",
           color: "yellow",
           title: "영어과제하기",
           contents: "기본회화 30개 암기!",

@@ -1,10 +1,31 @@
-import React from 'react';
+import React from "react";
+import styled from "styled-components";
+import { useRecoilState } from "recoil";
+import { memoState } from "../../atoms";
 
-const Footer = (props) => {
-    return (
-        <div>
-        </div>
-    );
+const Bar = styled.div`
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+`;
+const Footer = () => {
+  const [memo, setMemo] = useRecoilState(memoState);
+  const onAdd = (event) => {
+    setMemo((memo) => {
+      const memoCopy = [...memo];
+      memoCopy.push({
+        [`new Memo${Date.now().toString().substring(9, 12)}`]: [],
+      });
+      return [...memoCopy];
+    });
+  };
+  return (
+    <Bar>
+      <button style={{ fontSize: "20px" }} onClick={onAdd}>
+        📝
+      </button>
+    </Bar>
+  );
 };
 
 export default Footer;

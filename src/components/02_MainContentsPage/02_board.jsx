@@ -6,13 +6,14 @@ import Headers from "./headers";
 import AddBoxForm from "./addBoxForm";
 
 const BoardBox = styled.div`
-  width: 20em;
-  min-height: 15em;
+  min-width: 25em;
+  height: 15em;
   background-color: #dcdde1;
   margin: 0.5em;
   padding: 0.5em;
   display: flex;
   flex-direction: column;
+  font-size: 0.7em;;
 `;
 
 const MemoCardArea = styled.div`
@@ -37,20 +38,19 @@ const Board = ({ index, board }) => {
   return (
     <Draggable draggableId={name} index={index}>
       {(provided, snapshot) => (
-        <BoardBox ref={provided.innerRef} {...provided.draggableProps}>
-          <Headers
-            name={name}
-            provided={provided}
-            {...provided.dragHandleProps}
-          />
-
+        <BoardBox
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <Headers name={name} provided={provided} />
           <Droppable droppableId={name} direction="vertical" type="CARD">
             {(provided) => (
               <MemoCardArea
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                <AddBoxForm name={name}/>
+                <AddBoxForm name={name} />
                 {board[name].map((card, index) => (
                   <MemoCard key={card.id} index={index} card={card} />
                 ))}

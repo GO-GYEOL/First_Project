@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 
 const Wrapper = styled.div`
   display: flex;
+  justify-content: space-between;
 `;
 
 const Header = styled.div`
@@ -20,19 +21,27 @@ const Headers = ({ name, provided }) => {
   const onClick = () => {
     setHide((prev) => !prev);
   };
+
+  // board 이름변경기능
   const onSubmit = (event) => {
     event.preventDefault();
     const newName = inputRef.current.value;
     setHide((prev) => !prev);
-    const newMemo = memo.map(prev => {
-      if(Object.keys(prev).toString() == name){
-        return {[`${newName}`] : Object.values(prev)[0]}
-      }
-      else return prev
-    })
+    const newMemo = memo.map((prev) => {
+      if (Object.keys(prev).toString() == name) {
+        return { [`${newName}`]: Object.values(prev)[0] };
+      } else return prev;
+    });
     // 이 접근방법 계속 활용하게 된다.
     setMemo([...newMemo]);
-  }
+  };
+
+  // board 삭제기능
+  const onDelete = (event) => {
+    const newMemo = memo.filter((prev) => Object.keys(prev).toString() !== name);
+    console.log(newMemo);
+    setMemo([...newMemo]);
+  };
   return (
     <Wrapper>
       {hide ? (
@@ -42,9 +51,12 @@ const Headers = ({ name, provided }) => {
           <input ref={inputRef}></input>
         </form>
       )}
-      <button onClick={onClick}>✏️</button>
+      <div>
+        <button onClick={onClick}>✏️</button>
+        <button onClick={onDelete}>🗑️</button>
+      </div>
     </Wrapper>
   );
 };
 
-export default Headers
+export default Headers;

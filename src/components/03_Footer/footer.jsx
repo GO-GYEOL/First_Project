@@ -11,6 +11,7 @@ const Bar = styled.div`
 const Footer = () => {
   const [memo, setMemo] = useRecoilState(memoState);
   const onAdd = (event) => {
+    // board 추가기능
     setMemo((memo) => {
       const memoCopy = [...memo];
       memoCopy.push({

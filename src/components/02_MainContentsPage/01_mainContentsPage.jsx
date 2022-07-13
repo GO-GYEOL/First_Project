@@ -9,6 +9,7 @@ const AllMemoBoard = styled.div`
   display: flex;
   background-color: #0097e6;
   flex: 1;
+  height:100%;
 `;
 
 const MainContentsPage = (props) => {

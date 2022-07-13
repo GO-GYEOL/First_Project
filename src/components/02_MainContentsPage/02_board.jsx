@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import MemoCard from "./03_memoCard";
 import Headers from "./headers";
+import AddBoxForm from "./addBoxForm";
 
 const BoardBox = styled.div`
   width: 20em;
@@ -13,8 +14,6 @@ const BoardBox = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
-
 
 const MemoCardArea = styled.div`
   padding: 0.5em;
@@ -39,8 +38,11 @@ const Board = ({ index, board }) => {
     <Draggable draggableId={name} index={index}>
       {(provided, snapshot) => (
         <BoardBox ref={provided.innerRef} {...provided.draggableProps}>
-          <Headers name={name} provided={provided} {...provided.dragHandleProps}/>
-          
+          <Headers
+            name={name}
+            provided={provided}
+            {...provided.dragHandleProps}
+          />
 
           <Droppable droppableId={name} direction="vertical" type="CARD">
             {(provided) => (
@@ -48,6 +50,7 @@ const Board = ({ index, board }) => {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
+                <AddBoxForm name={name}/>
                 {board[name].map((card, index) => (
                   <MemoCard key={card.id} index={index} card={card} />
                 ))}

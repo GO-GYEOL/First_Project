@@ -1,6 +1,7 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
+import CardDetail from "./cardDetail";
 
 const Card = styled.div`
   width: 100%;
@@ -17,6 +18,7 @@ const MemoCard = ({ card, index }) => {
           {...provided.dragHandleProps}
         >
           {card.title}
+          <CardDetail/>
         </Card>
       )}
     </Draggable>

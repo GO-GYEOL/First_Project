@@ -23,7 +23,6 @@ const Headers = ({ name, provided }) => {
   const onSubmit = (event) => {
     event.preventDefault();
     const newName = inputRef.current.value;
-    console.log(name);
     setHide((prev) => !prev);
     const newMemo = memo.map(prev => {
       if(Object.keys(prev).toString() == name){
@@ -32,7 +31,6 @@ const Headers = ({ name, provided }) => {
       else return prev
     })
     // 이 접근방법 계속 활용하게 된다.
-    console.log(newMemo);
     setMemo([...newMemo]);
   }
   return (

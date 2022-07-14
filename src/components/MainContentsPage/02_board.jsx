@@ -7,13 +7,13 @@ import AddBoxForm from "./addBoxForm";
 
 const BoardBox = styled.div`
   min-width: 25em;
-  height: 15em;
+  min-height: 15em;
   background-color: #dcdde1;
   margin: 0.5em;
   padding: 0.5em;
   display: flex;
   flex-direction: column;
-  font-size: 0.7em;;
+  font-size: 0.7em; ;
 `;
 
 const MemoCardArea = styled.div`
@@ -34,6 +34,7 @@ const BoardContents = styled.div`
 
 const Board = ({ index, board }) => {
   const name = Object.keys(board).toString();
+  const boardIndex = index;
 
   return (
     <Draggable draggableId={name} index={index}>
@@ -52,7 +53,13 @@ const Board = ({ index, board }) => {
               >
                 <AddBoxForm name={name} />
                 {board[name].map((card, index) => (
-                  <MemoCard key={card.id} index={index} card={card} />
+                  <MemoCard
+                    key={card.id}
+                    index={index}
+                    card={card}
+                    board={Object.keys(board).toString()}
+                    boardIndex={boardIndex}
+                  />
                 ))}
                 {provided.placeholder}
               </MemoCardArea>

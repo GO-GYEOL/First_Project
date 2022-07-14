@@ -36,6 +36,7 @@ const AddBoxForm = ({ name }) => {
               color: "white",
               title: inputRef.current.value,
               contents: "",
+              comments: [],
             });
           } else return item;
         });

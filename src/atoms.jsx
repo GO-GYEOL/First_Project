@@ -1,3 +1,6 @@
+// atom에 파이어베이스를 통해 카드 정보들을 가져오는게 좋을듯.
+// 컬렉션은 
+
 import { atom } from "recoil";
 
 export const memoState = atom({
@@ -12,7 +15,6 @@ export const memoState = atom({
           contents: "이따 집앞 카페에서 모이자 6시!",
           comments: [
             { user: "결이", text: "안녕?" },
-            { user: "렌고쿠", text: "안녕?" },
           ],
         },
         {
@@ -72,3 +74,15 @@ export const memoState = atom({
 
 // 형식 이렇게 바꿔줘야하나?
 // 오 새로운거 배웠다. 배열방식
+
+
+export const loginState = atom({
+  key:"user",
+  default:{
+    userName: null,
+    photoURL: null,
+    uid: null,
+  }
+})
+
+// 일단 그냥 useRecoilState만 쓰자.

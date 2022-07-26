@@ -4,24 +4,24 @@ import User from "./User/user";
 
 const Navbar = styled.div`
   width: 100%;
-  background-color: rgba(255,255,255,1);
+  background-color: rgba(220,221,225,0.52);
   display:flex;
-  justify-content: space-between;
-  height:2em;
+  height:2.5em;
   &:first-child{
     justify-content: center;
   }
-  position:relative;
 `;
 
 const Logo = styled.div`
-  font-size: 2em;
+  font-size: 1.3em;
+  color:white;
+  font-weight:bold;
+  line-height:2em;
 `;
 
 const NavigationBar = (props) => {
   return (
     <Navbar>
-      
       <Logo>Grello</Logo>
       <User/>
     </Navbar>

@@ -6,30 +6,17 @@ import Headers from "./headers";
 import AddBoxForm from "./addBoxForm";
 
 const BoardBox = styled.div`
-  min-width: 25em;
-  min-height: 15em;
-  background-color: #dcdde1;
-  margin: 0.5em;
+  min-width: 23em;
+  min-height: 30em;
+  background-color: white;
+  /* margin: 0.5em; */
   padding: 0.5em;
   display: flex;
   flex-direction: column;
-  font-size: 0.7em; ;
-`;
-
-const MemoCardArea = styled.div`
-  padding: 0.5em;
-  background-color: gray;
-  height: 100%;
-`;
-
-const BoardContents = styled.div`
-  width: 100%;
-  padding: 10px;
-  background-color: #fff;
-  border-radius: 0.8em;
-  font-size: 0.8em;
-  box-sizing: border-box;
-  margin-bottom: 0.5em;
+  font-size: 0.7em;
+  margin-right: 2em;
+  border-radius: 0.3em;
+  box-shadow: 0px 3px 20px 1px rgba(0, 0, 0, 0.7);
 `;
 
 const Board = ({ index, board }) => {
@@ -44,27 +31,28 @@ const Board = ({ index, board }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <Headers name={name} provided={provided} />
-          <Droppable droppableId={name} direction="vertical" type="CARD">
-            {(provided) => (
-              <MemoCardArea
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                <AddBoxForm name={name} />
-                {board[name].map((card, index) => (
-                  <MemoCard
-                    key={card.id}
-                    index={index}
-                    card={card}
-                    board={Object.keys(board).toString()}
-                    boardIndex={boardIndex}
-                  />
-                ))}
-                {provided.placeholder}
-              </MemoCardArea>
-            )}
-          </Droppable>
+          <div
+            style={{ backgroundColor: "#D9D9D9", flex: "1", padding: "5px" }}
+          >
+            <Headers name={name} provided={provided} />
+            <AddBoxForm name={name} />
+            <Droppable droppableId={name} direction="vertical" type="CARD">
+              {(provided) => (
+                <div style={{display:"flex", flexDirection:"column", minHeight:"200px"}} ref={provided.innerRef} {...provided.droppableProps}>
+                  {board[name].map((card, index) => (
+                    <MemoCard
+                      key={card.id}
+                      index={index}
+                      card={card}
+                      board={Object.keys(board).toString()}
+                      boardIndex={boardIndex}
+                    />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
         </BoardBox>
       )}
     </Draggable>

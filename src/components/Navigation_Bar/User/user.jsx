@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { loginState } from "../../../atoms";
 const LogIn_Info = styled.div`
   position:absolute;
-  top:-2px;
-  right:10px;
+  top:3px;
+  right:50px;
 `;
 const Icon = styled.img`
   /* width:100%; */

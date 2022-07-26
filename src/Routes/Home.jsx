@@ -9,12 +9,11 @@ display:flex;
 flex-direction: column;
 height:100vh;
 `
+
 function Home() {
   return (
     <Wrapper>
-      <NavigationBar />
       <MainContentsPage/>
-      <Footer />
     </Wrapper>
   );
 }

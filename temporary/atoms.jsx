@@ -1,18 +1,29 @@
 // atom에 파이어베이스를 통해 카드 정보들을 가져오는게 좋을듯.
-// 컬렉션은
+// 컬렉션은 
 
-import { async } from "@firebase/util";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { atom } from "recoil";
 import { db } from "./Service/fbase";
-import { GetMemos } from "./Service/memo_repository";
 
-// export const memoStates = atom({
-//   key:"memo",
-//   default: GetMemos(),
+// const [memo, setMemo] = useState();
+// const [memos, setMemos] = useState();
+
+export const getMemos = async() => {
+  const querySnapshot = await getDocs(collection(db, "0718", "to_do", "cards"));
+  querySnapshot.forEach(doc => {
+    console.log(doc.data())
+  })
+}
+
+// useEffect(() => {
+//   const q = query(collection(db, "0718", ), orderBy())
 // })
 
+// export const memoState = atom({
+//   key:"memos",
+//   default:[]
+// })
 
 export const memoState = atom({
   key: "memo",
@@ -86,13 +97,14 @@ export const memoState = atom({
 // 형식 이렇게 바꿔줘야하나?
 // 오 새로운거 배웠다. 배열방식
 
+
 export const loginState = atom({
-  key: "user",
-  default: {
+  key:"user",
+  default:{
     userName: null,
     photoURL: null,
     uid: null,
-  },
-});
+  }
+})
 
 // 일단 그냥 useRecoilState만 쓰자.

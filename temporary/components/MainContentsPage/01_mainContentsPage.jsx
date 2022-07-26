@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
 import { constSelector, useRecoilState } from "recoil";
-import { memoState } from "../../atoms";
+import { getMemos, memoState } from "../../atoms";
 import Board from "./02_board";
 import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
+/* 그냥 파베로 변동될때마다 가져오고, state로 저장한 뒤 화면에 뿌려준다. 
+form button onsubmit시 그냥 adddoc, updatedoc, deletedoc 발생시킨다. 그럼 다시 파베 변동되고 저절로 state로 저장되고 화면에 뿌려진다. */
 
 const AllMemoBoard = styled.div`
   display: flex;
@@ -93,6 +96,7 @@ const MainContentsPage = (props) => {
 
   useEffect(() => {
     console.log(memo);
+    getMemos();
   }, [memo]);
 
   return (

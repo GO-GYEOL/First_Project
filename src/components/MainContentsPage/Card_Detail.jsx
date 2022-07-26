@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { doc, onSnapshot, setDoc } from "firebase/firestore";
+import { db } from "../../Service/fbase";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Home from "../../Routes/Home";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { memoState } from "../../atoms";
+import { useRef } from "react";
 
 // 얘는 리액트 라우터 돔으로 만들 것이다. card에서 edit버튼 클릭 시 링크 이쪽으로 이동하도록. 다만 이전의 페이지도 보여야한다. 팝업형태로 띄울 것임.
 
@@ -121,14 +124,50 @@ const CommentText = styled.div`
   border-radius: 10px;
 `;
 
-const CardDetail = (props) => {
+const CardDetail = () => {
+  const contentRef = useRef();
+  const inputRef = useRef();
   const { boardIndex, boardName, cardIndex } = useParams();
-  const [memo, setMemo] = useRecoilState(memoState);
+  const location = useLocation();
+  const card = location.state;
+  const [data, setData] = useState();
+  // addBoxForm 에도 얘 써줬다. 통합시켜줘야됨.
+  useEffect(() => {
+    const docs = doc(db, "0718", "cards");
+    onSnapshot(docs, (snapshot) => {
+      const nweetArray = snapshot.data();
+      setData(nweetArray.AllBoard);
+    });
+  }, []);
+
   const navigate = useNavigate();
   const onClick = () => {
     navigate(-1);
   };
-  const card = memo[boardIndex][boardName][cardIndex];
+
+  // 컨텐츠 수정
+  const onContentSubmit = (event) => {
+    event.preventDefault();
+    const dataCopy = [...data];
+    dataCopy[boardIndex][boardName][cardIndex]["contents"] =
+      contentRef.current.value;
+    setDoc(doc(db, "0718", "cards"), {
+      AllBoard: [...dataCopy],
+    });
+  };
+
+  // 댓글 추가
+  const onCommentSubmit = (event) => {
+    event.preventDefault();
+    const dataCopy = [...data];
+    dataCopy[boardIndex][boardName][cardIndex]["comments"].push({
+      user: "userId",
+      text: inputRef.current.value,
+    });
+    setDoc(doc(db, "0718", "cards"), {
+      AllBoard: [...dataCopy],
+    });
+  };
 
   return (
     <div>
@@ -147,21 +186,31 @@ const CardDetail = (props) => {
           </TitleBox>
           <Title>{card.title}</Title>
           <TitleName>Description</TitleName>
-          <TextArea
-            spellCheck="false"
-            placeholder="Write down text here"
-            defaultValue={card.contents}
-          ></TextArea>
+          <form onSubmit={onContentSubmit}>
+            <TextArea
+              spellCheck="false"
+              placeholder="Write down text here"
+              defaultValue={card.contents}
+              ref={contentRef}
+            ></TextArea>
+            <button onClick={onContentSubmit}>Save</button>
+          </form>
           <TitleName>Comments</TitleName>
           <CommentBox>
             <IconBox>
               <Icon />
             </IconBox>
             <CommentSmallBox>
-              <CommentDown placeholder="Write a comment here"></CommentDown>
-              <AddBtn>add</AddBtn>
+              <form onSubmit={onCommentSubmit}>
+                <CommentDown
+                  ref={inputRef}
+                  placeholder="Write a comment here"
+                ></CommentDown>
+                <AddBtn onClick={onCommentSubmit}>add</AddBtn>
+              </form>
             </CommentSmallBox>
           </CommentBox>
+          {/* 여기 card 대신 data 이용해서 바꿔줘야 실시간으로 댓글 업로드되는데 해결방법 잘 모르겠다.@@@@@@@@@@@@ */}
           {card.comments.map((comment) => {
             return (
               <div key={comment.id}>

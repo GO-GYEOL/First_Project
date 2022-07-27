@@ -48,6 +48,7 @@ const Headers = ({ name, provided }) => {
       if (Object.keys(prev).toString() == name) {
         return { [`${newName}`]: Object.values(prev)[0] };
         // 속성명에다가는 [] 해줘야하나보다. 속성접근자처럼. 이거 모르면 시간낭비할듯.
+        // 속성명이라서가 아니라, 고정값 아닌 텍스트는 이런식으로 처리해준다.
       } else return prev;
     });
     // 이 접근방법 계속 활용하게 된다.

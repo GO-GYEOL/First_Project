@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import styled from "styled-components";
-import { memoState } from "../../atoms";
-import { useRecoilState } from "recoil";
+import { loginState, memoState } from "../../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../../Service/fbase";
 
 const AddBox = styled.button`
   width: 2rem;
   height: 1.3rem;
-  background-color: #8ABA6C;
+  background-color: #8aba6c;
   border-radius: 1em;
   &:hover {
     background-color: #8c7ae6;
@@ -29,6 +29,7 @@ const InputBox = styled.input`
 
 const AddBoxForm = ({ name }) => {
   const [data, setData] = useState();
+  const userInfo = useRecoilValue(loginState);
   useEffect(() => {
     const docs = doc(db, "0718", "cards");
     onSnapshot(docs, (snapshot) => {
@@ -49,6 +50,7 @@ const AddBoxForm = ({ name }) => {
     const onAddFn = () => {
       const newMemo = JSON.parse(JSON.stringify(dataCopy));
       newMemo.map((item) => {
+        // 내가했지만 어케 생각해냈지
         if (Object.keys(item).toString() == name) {
           return item[name].push({
             id: Date.now().toString(),
@@ -56,6 +58,7 @@ const AddBoxForm = ({ name }) => {
             title: inputRef.current.value,
             contents: "",
             comments: [],
+            uid: userInfo.uid,
           });
         } else return item;
       });

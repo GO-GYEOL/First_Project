@@ -24,3 +24,25 @@ card 추가 기능
 
 
 중첩 라우팅
+
+recoil로 유저 정보 관리
+
+
+App.jsx (22.07.27)
+유저정보 파이어베이스랑 연동 방식 바꿨다. recoil로 유저정보 저장함.
+  // 유저 정보
+  const [userInfo, setUserInfo] = useRecoilState(loginState);
+  useEffect(() => {
+    const auth = getAuth();
+    // onAuthStateChanged 사용했다. user 정보 바뀔때마다 또는 처음에 정보 전달해준다. 
+    onAuthStateChanged(auth, (user) =>
+      setUserInfo({
+        userName: user.displayName,
+        photoURL: user.photoURL,
+        uid: user.uid,
+      })
+    );
+  }, []);
+  // 로그아웃 버튼 추가
+  // 댓글 실시간 연동, 스크롤 추가
+  // 카드 삭제기능, 그 외(컨텐츠 버튼 수정, card_detail ui 수정), comment 삭제버튼 추가필요

@@ -87,12 +87,13 @@ export const memoState = atom({
 // 오 새로운거 배웠다. 배열방식
 
 export const loginState = atom({
-  key: "user",
+  key: "login",
   default: {
-    userName: null,
-    photoURL: null,
-    uid: null,
+    // userName: null,
+    // photoURL: null,
+    // uid: null,
   },
 });
 
 // 일단 그냥 useRecoilState만 쓰자.
+

@@ -28,14 +28,14 @@ const AllMemoBoard = styled.div`
   align-items: center;
   /* justify-content: center; */
   overflow-x: scroll;
+  // 가운데정렬 justify-contents:center 대신 아래처럼 사용
   &::before,
   &::after {
     content: "";
     flex: 1;
   }
   &::-webkit-scrollbar {
-    /* width: 8px;  */
-    height:8px;
+    height: 8px;
   }
   &::-webkit-scrollbar-thumb {
     height: 10%; /* 스크롤바의 길이 */
@@ -131,7 +131,6 @@ const MainContentsPage = (props) => {
 
         const newMemoCopy = memoCopy.map((item) => {
           if (Object.keys(item).toString() == source.droppableId) {
-            console.log("here!!");
             return selectedBoardObj;
           }
           if (Object.keys(item).toString() == destination.droppableId) {

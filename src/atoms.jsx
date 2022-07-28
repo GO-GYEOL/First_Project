@@ -88,11 +88,7 @@ export const memoState = atom({
 
 export const loginState = atom({
   key: "login",
-  default: {
-    // userName: null,
-    // photoURL: null,
-    // uid: null,
-  },
+  default: null,
 });
 
 // 일단 그냥 useRecoilState만 쓰자.

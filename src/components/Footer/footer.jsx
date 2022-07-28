@@ -27,7 +27,7 @@ const Bar = styled.div`
       margin-right: 0.5rem;
     }
     &:hover {
-      background-color:rgba(255, 255, 255, 0.5)
+      background-color: rgba(255, 255, 255, 0.5);
     }
   }
 `;
@@ -43,6 +43,7 @@ const Footer = () => {
     });
   }, []);
 
+  // 보드 추가기능
   const AddBoardFn = () => {
     const dataCopy = [...data];
     dataCopy.push({
@@ -52,26 +53,26 @@ const Footer = () => {
       AllBoard: [...dataCopy],
     });
   };
-  const onAdd = (event) => {
-    // board 추가기능
-    AddBoardFn();
 
-    /* setMemo((memo) => {
-      const memoCopy = [...memo];
-      memoCopy.push({
-        [`new Memo${Date.now().toString().substring(9, 12)}`]: [],
-      });
-      return [...memoCopy];
-    }); */
+  // 보드 추가기능
+  const onAdd = (event) => {
+    AddBoardFn();
   };
 
   return (
     <Bar>
       <button>게스트용보드</button>
-      <button style={{ fontSize: "20px" }} onClick={onAdd}>
-        📝
+      <button
+        style={{
+          fontSize: "20px",
+          fontWeight: "bold",
+          padding: "5px 10px 5px 10px",
+        }}
+        onClick={onAdd}
+      >
+        +
       </button>
-      <button>설정</button>
+      {/* <button style={{padding:"10px"}}>...</button> */}
     </Bar>
   );
 };

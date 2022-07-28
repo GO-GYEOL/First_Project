@@ -33,17 +33,17 @@ const Wrapper = styled.div`
     width: 8px;
   }
   &::-webkit-scrollbar-thumb {
-    height: 10%; /* 스크롤바의 길이 */
-    background: #919295; /* 스크롤바의 색상 */
+    height: 10%; 
+    background: #919295; 
   }
   &::-webkit-scrollbar-track {
-    background: rgba(33, 122, 244, 0.1); /*스크롤바 뒷 배경 색상*/
+    background: rgba(33, 122, 244, 0.1); 
   }
 `;
 
 const DeleteBtn = styled.button`
   margin-left: 1rem;
-  font-size:1.1rem;
+  font-size: 1.1rem;
   border: 0px;
   padding: 0.2rem;
   &:hover {
@@ -109,6 +109,9 @@ const CommentSmallBox = styled.div`
   background-color: #d9d9d9;
   text-align: right;
   border-radius: 0.3em;
+  &:hover {
+    background-color: lightgray;
+  }
 `;
 const CommentDown = styled.input`
   width: 97%;
@@ -162,13 +165,12 @@ const CommentText = styled.div`
   padding: 0.8rem;
   box-sizing: border-box;
   border-radius: 0.3rem;
-  line-height:3px;
+  line-height: 3px;
+  &:hover {
+    background-color: #c23616;
+    color: white;
+  }
 `;
-
-const CommentDelBtn = styled.button`
-  background-color: transparent;
-  font-size:0.8em;
-`
 
 const CardDetail = () => {
   const contentRef = useRef();
@@ -184,10 +186,9 @@ const CardDetail = () => {
   // 댓글은 navigate를 통해 props를 전달받게되는데, 이 location의 props의 댓글을 추가해도 리액트에서 변화를 인지하지 못하고 리렌더링 안한다. 그래서 새로고침해서 전체가 리렌더링 돼야만 변화가 적용돼서 나온다. 왜냐면 navigate를 통해 location이 전달받은 props는 객체(card정보이므로)이므로 참조형인데, 참조형은 수정해도 레퍼런스가 동일하기 때문에 리액트에서 변화로 인지하지 못하여 useState를 이용해왔기 때문이다.
   // 방법1 comments는 data라는 state가 setData로 변경되었으므로 data는 변했다고 처리되고, 그렇기에 data를 받는 comments도 정보가 새로고침된다. 그래서 화면에 변화가 바로 표시된다.
   // 방법 2 이것을 해결하기 위해 location이 navigate로 전달받은 state를 useState로 저장해서 아래 return에 뿌려주던가 하면 될 것이다. 그러면 실시간으로 댓글 추가되어도 바로 변화가 생길 수 있다. 그러나 이렇게 따로 전달받은 state를 이용해 useState로 저장하면, 당연히 파이어베이스와 연동되는게 아니므로 서버에 데이터 업로드되지 않는다. 그래서
-  // 아 슈발 이거 아니네, 걍 가져온 props로 화면에 뿌려놓고 파이어클라우드 쳐 수정을 했는데 뿌리는건 props니 당연히 변동이 없지!!!!
+  // 아 이거 아니네, 걍 가져온 props로 화면에 뿌려놓고 파이어클라우드 수정을 했는데 뿌리는건 props니 당연히 변동이 없지!!!!
   // 걍 바뀔 필요가 없는 애들은 location으로 가져오고, 필요가 있는 애들은 서버에서 직접 가져온거임.
 
-  // addBoxForm 에도 얘 써줬다. 통합시켜줘야됨.
   useEffect(() => {
     const docs = doc(db, "0718", "cards");
     onSnapshot(docs, (snapshot) => {
@@ -225,7 +226,7 @@ const CardDetail = () => {
       user: userInfo.userName,
       profile: userInfo.photoURL,
       text: inputRef.current.value,
-      // id:Date.now(),
+      uid: userInfo.uid,
     });
     setDoc(doc(db, "0718", "cards"), {
       AllBoard: [...dataCopy],
@@ -233,31 +234,46 @@ const CardDetail = () => {
     inputRef.current.value = "";
   };
 
-  const onCardDelete = () => {
-    const dataCopy = [...data];
-    dataCopy[boardIndex][boardName].splice(cardIndex, 1);
-    setDoc(doc(db, "0718", "cards"), {
-      AllBoard: [...dataCopy],
-    });
-    navigate(-1);
+  // 댓글삭제
+  const onCommentDelete = (event) => {
+    let dataCopy = [...data];
+    let comments = dataCopy[boardIndex][boardName][cardIndex]["comments"];
+    // <-- 데이터의 하위배열요소를 따로 변수 저장하면 새로운 ref에 복사가 되나봄. comments 바꾼다고 dataCopy의 하위배열이 바뀌지 않는다.
+    const innerText = event.target.innerText;
+    const ok = window.confirm("해당 댓글을 지우시겠습니까?");
+    if (ok) {
+      const a = comments.filter(
+        (item) => item.uid !== userInfo.uid || item.text !== innerText
+      );
+      const JsonA = JSON.stringify(a);
+      const JsonComments = JSON.stringify(comments);
+      if (JsonA == JsonComments) {
+        // 참조형변수는 메모리의 주소가 같냐를 따지기 때문에 객체의 value를 비교하고 싶다면 기본형변수로 만들고 비교해주는 것이 좋다.
+        console.log(a);
+        console.log(comments);
+        window.alert("댓글 작성자만 삭제가 가능합니다.");
+      } else {
+        dataCopy[boardIndex][boardName][cardIndex]["comments"] = a;
+        setDoc(doc(db, "0718", "cards"), {
+          AllBoard: [...dataCopy],
+        });
+      }
+    }
   };
 
-  const onCommentDelete = (event) => {
+  // 카드삭제
+  const onCardDelete = () => {
     const dataCopy = [...data];
-    const comments = dataCopy[boardIndex][boardName][cardIndex]["comments"]
-    const innerText = event.target.innerText
-    // console.log(innerText)
-    // const a = comments.filter(item => item.text === innerText) 이렇게 하기보다 reduce를 쓰면 기존 배열 자체를 건드린다는데? 그러니 덜 번거로워진다. 근데 시간없어서 내일 방법 찾아보고 적용해보려함.
-    comments.reduce(item => {
-      if(item.text !== innerText){
-        return;
-      }
-      else{
-        return item;
-      }
-    })
-    console.log(comments);
-  }
+    const ok = window.confirm("삭제하시겠습니까?");
+    if (ok) {
+      dataCopy[boardIndex][boardName].splice(cardIndex, 1);
+      setDoc(doc(db, "0718", "cards"), {
+        AllBoard: [...dataCopy],
+      });
+      navigate(-1);
+    }
+  };
+
   return (
     <div>
       <Overlay onClick={onClick}></Overlay>
@@ -295,7 +311,6 @@ const CardDetail = () => {
               </form>
             </CommentSmallBox>
           </CommentBox>
-          {/* 여기 card 대신 data 이용해서 바꿔줘야 실시간으로 댓글 업로드되는데 해결방법 잘 모르겠다.@@@@@@@@@@@@ */}
           {comments
             ? comments.map((comment) => {
                 return (

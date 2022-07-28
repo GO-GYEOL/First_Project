@@ -16,10 +16,24 @@ const Header = styled.div`
   font-weight: bold;
 `;
 
+const Input = styled.input`
+  width: 7rem;
+  padding-left:10px;
+  outline: 0px;
+  border: 0px;
+  border-radius: 3px;
+  margin-bottom:2px;
+  margin-left:1px;
+`;
+
 const Button = styled.button`
-border:0;
-margin-right:0.3rem;
-`
+  border: 0;
+  margin-right: 0.3rem;
+  cursor: pointer;
+  &:hover {
+    background-color: lightgray;
+  }
+`;
 
 const Headers = ({ name, provided }) => {
   const [data, setData] = useState();
@@ -59,13 +73,16 @@ const Headers = ({ name, provided }) => {
 
   // board 삭제기능
   const onDelete = (event) => {
-    const dataCopy = [...data];
-    const newMemo = dataCopy.filter(
-      (prev) => Object.keys(prev).toString() !== name
-    );
-    return setDoc(doc(db, "0718", "cards"), {
-      AllBoard: [...newMemo],
-    });
+    const ok = window.confirm("해당 보드를 정말로 삭제하시겠습니까?");
+    if (ok) {
+      const dataCopy = [...data];
+      const newMemo = dataCopy.filter(
+        (prev) => Object.keys(prev).toString() !== name
+      );
+      return setDoc(doc(db, "0718", "cards"), {
+        AllBoard: [...newMemo],
+      });
+    }
   };
 
   return (
@@ -74,7 +91,7 @@ const Headers = ({ name, provided }) => {
         <Header {...provided.dragHandleProps}>{name}</Header>
       ) : (
         <form onSubmit={onSubmit}>
-          <input ref={inputRef}></input>
+          <Input placeholder="press the enter" ref={inputRef}></Input>
         </form>
       )}
       <div>

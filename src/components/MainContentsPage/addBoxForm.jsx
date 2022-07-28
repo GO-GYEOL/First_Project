@@ -19,7 +19,6 @@ const AddBox = styled.button`
   text-align: center;
   font-size: 0.7em;
   border: 0;
-  /* font-weight:bold; */
 `;
 
 const InputBox = styled.input`
@@ -38,11 +37,7 @@ const AddBoxForm = ({ name }) => {
     });
   }, []);
 
-  // setDoc(doc(db, "0718", "cards"), {
-  //   AllBoard: [...memo],
-  // });
 
-  // const [memo, setMemo] = useRecoilState(memoState);
   const inputRef = useRef();
   const onAddCard = (event) => {
     event.preventDefault();
@@ -50,7 +45,6 @@ const AddBoxForm = ({ name }) => {
     const onAddFn = () => {
       const newMemo = JSON.parse(JSON.stringify(dataCopy));
       newMemo.map((item) => {
-        // 내가했지만 어케 생각해냈지
         if (Object.keys(item).toString() == name) {
           return item[name].push({
             id: Date.now().toString(),
@@ -59,6 +53,8 @@ const AddBoxForm = ({ name }) => {
             contents: "",
             comments: [],
             uid: userInfo.uid,
+            userName:userInfo.userName,
+            photoURL:userInfo.photoURL
           });
         } else return item;
       });
@@ -72,11 +68,6 @@ const AddBoxForm = ({ name }) => {
       onAddFn();
     }
   };
-  /* 
-  setMemo((memo) => {
-    
-  })
- */
 
   return (
     <form

@@ -6,6 +6,7 @@ import {
   FacebookAuthProvider,
   GithubAuthProvider,
   signOut,
+  signInAnonymously,
 } from "firebase/auth";
 import { firebaseApp } from "../Service/fbase";
 import { useNavigate } from "react-router-dom";
@@ -20,15 +21,45 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(20, 20, 20, 0.1);
+`;
+
+const ContentsBox = styled.div`
+  width: 20rem;
+  height: 18rem;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+`;
+
+const TitleBox = styled.div`
+  width: 100%;
+  height: 5rem;
+  background-color: #353b48;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  line-height: 5rem;
+  margin-bottom: 2rem;
 `;
 
 const LoginBox = styled.div`
-  width: 30rem;
-  height: 20rem;
-  background-color: pink;
+  background-color: #d9d9d9;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 2rem;
+  margin: 0 auto;
+  margin-bottom: 0.3rem;
+  padding: 10px 50px 10px 50px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  cursor: pointer;
+  &:hover {
+    background-color: #487eb0;
+    color: white;
+  }
 `;
 
 const LogIn = (props) => {
@@ -37,16 +68,12 @@ const LogIn = (props) => {
 
   const onLoginClick = (name) => {
     const GoToHome = (props) => {
-      const userInfo = {
-        userName: props.user.displayName,
-        photoURL: props.user.photoURL,
-        uid: props.user.uid,
-      };
       navigate("/");
     };
     const auth = getAuth();
     const GoogleProvider = new GoogleAuthProvider();
     const GithubProvider = new GithubAuthProvider();
+
     if (name == "Google") {
       signInWithPopup(auth, GoogleProvider).then((result) => {
         GoToHome(result);
@@ -55,20 +82,27 @@ const LogIn = (props) => {
       signInWithPopup(auth, GithubProvider).then((result) => {
         GoToHome(result);
       });
+    } else {
+      signInAnonymously(auth).then((result) => {
+        GoToHome(result);
+      });
     }
-    // 이 함수 그대로 navigate로 전달 안되는거 같은데? auth도 전달 안됨. value로 그냥 변수만 전달 가능한 것 같다. 메서드 전달 안됨.
   };
 
   return (
     <Wrapper>
-      <LoginBox>
-        <button onClick={() => onLoginClick("Google")}>
+      <ContentsBox>
+        <TitleBox>Schedule share App</TitleBox>
+        <LoginBox onClick={() => onLoginClick("Google")}>
           Google로 로그인하기
-        </button>
-        <button onClick={() => onLoginClick("Github")}>
+        </LoginBox>
+        <LoginBox onClick={() => onLoginClick("Github")}>
           Github로 로그인하기
-        </button>
-      </LoginBox>
+        </LoginBox>
+        <LoginBox onClick={() => onLoginClick("Guest")}>
+          익명으로 로그인하기
+        </LoginBox>
+      </ContentsBox>
     </Wrapper>
   );
 };

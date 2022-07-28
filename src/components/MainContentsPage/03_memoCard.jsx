@@ -12,21 +12,30 @@ const Card = styled.div`
   padding: 15px 5px 15px 5px;
   font-size: 0.7rem;
   text-align: center;
-  &:hover{
+  &:hover {
     background-color: #dcdde1;
   }
 `;
-
+const Icon = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 0.1rem;
+  position: relative;
+  top: -4px;
+  border-radius:10px;
+  margin-bottom:2px;
+`;
+const UserName = styled.div`
+  font-size: 0.7rem;
+`;
 const MemoCard = ({ card, index, board, boardIndex }) => {
   const navigate = useNavigate();
-  const {state} = useLocation();
-  // const uid = state.uid;
-  // const photoURL = state.photoURL;
-  // const userName = state.userName;
-  // 아 그런데 이렇게 해야되나, 이렇게하면 card detail에 얘네 전해주고, 댓글 쓸 때 얘네 추가해줘서 데이터 만들면 되긴 하는데 좀 멋이 안난다. recoil에서 유저정보 가져오면 편할 것 같은데.
 
   const onCardDetail = () => {
-    navigate(`/about/${boardIndex}/${board}/${index}`, { state: {...card} });
+    navigate(`/about/${boardIndex}/${board}/${index}`, { state: { ...card } });
+    {
+      console.log(card);
+    }
   };
   return (
     <Draggable key={card.id} draggableId={card.id} index={index}>
@@ -38,8 +47,10 @@ const MemoCard = ({ card, index, board, boardIndex }) => {
             {...provided.dragHandleProps}
             onClick={onCardDetail}
           >
-            user
-            <br />
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Icon src={card.photoURL}></Icon>
+              <UserName>{card.userName}</UserName>
+            </div>
             {card.title}
           </Card>
         </div>

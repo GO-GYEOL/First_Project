@@ -18,12 +18,12 @@ const Header = styled.div`
 
 const Input = styled.input`
   width: 7rem;
-  padding-left:10px;
+  padding-left: 10px;
   outline: 0px;
   border: 0px;
   border-radius: 3px;
-  margin-bottom:2px;
-  margin-left:1px;
+  margin-bottom: 2px;
+  margin-left: 1px;
 `;
 
 const Button = styled.button`
@@ -35,13 +35,13 @@ const Button = styled.button`
   }
 `;
 
-const Headers = ({ name, provided }) => {
+const BoardHeaders = ({ name, provided }) => {
   const [data, setData] = useState();
   useEffect(() => {
     const docs = doc(db, "0718", "cards");
     onSnapshot(docs, (snapshot) => {
-      const nweetArray = snapshot.data();
-      setData(nweetArray.AllBoard);
+      const cloudData = snapshot.data();
+      setData(cloudData.AllBoard);
     });
   }, []);
 
@@ -57,18 +57,29 @@ const Headers = ({ name, provided }) => {
     const dataCopy = [...data];
     event.preventDefault();
     const newName = inputRef.current.value;
-    setHide((prev) => !prev);
-    const newMemo = dataCopy.map((prev) => {
-      if (Object.keys(prev).toString() == name) {
-        return { [`${newName}`]: Object.values(prev)[0] };
-        // 속성명에다가는 [] 해줘야하나보다. 속성접근자처럼. 이거 모르면 시간낭비할듯.
-        // 속성명이라서가 아니라, 고정값 아닌 텍스트는 이런식으로 처리해준다.
-      } else return prev;
-    });
-    // 이 접근방법 계속 활용하게 된다.
-    return setDoc(doc(db, "0718", "cards"), {
-      AllBoard: [...newMemo],
-    });
+
+    // board 이름 중복체크(방법 고민좀 함)
+    const overlapped = dataCopy.filter(
+      (prev) => Object.keys(prev).toString() == newName
+    );
+    if (JSON.stringify(overlapped) == "[]") {
+      // board 이름 변경 함수
+      setHide((prev) => !prev);
+      const newMemo = dataCopy.map((prev) => {
+        if (Object.keys(prev).toString() == name) {
+          return { [`${newName}`]: Object.values(prev)[0] };
+          // Object.values(prev)는 배열을 가진 배열.
+          // 속성명에다가는 [] 해줘야하나보다. 속성접근자처럼. 이거 모르면 시간낭비할듯.
+          // 속성명이라서가 아니라, 고정값 아닌 텍스트는 이런식으로 처리해준다.
+        } else return prev;
+      });
+      // 이 접근방법 계속 활용하게 된다.
+      return setDoc(doc(db, "0718", "cards"), {
+        AllBoard: [...newMemo],
+      });
+    } else {
+      window.alert("동일한 이름의 보드가 존재합니다.");
+    }
   };
 
   // board 삭제기능
@@ -102,4 +113,4 @@ const Headers = ({ name, provided }) => {
   );
 };
 
-export default Headers;
+export default BoardHeaders;

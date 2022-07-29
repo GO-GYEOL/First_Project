@@ -1,7 +1,7 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Home from "./Routes/Home";
-import CardDetail from "./components/MainContentsPage/Card_Detail";
-import LogIn from "./components/Login";
+import CardDetail from "./components/MainPageContents/MemoCard__Detail";
+import LogIn from "./Routes/Login";
 import { useState } from "react";
 import { loginState } from "./atoms";
 import { useEffect } from "react";
@@ -24,16 +24,11 @@ function App() {
         uid: user.uid,
       })
     );
-    console.log(userInfo);
   }, []);
+  // 로그인 체크를 하는데 useEffect의 의존성배열[]을 [userInfo]로 하면 될 줄 알았는데, 이렇게 하면 계속 실행된다. 이유가 뭘까. userInfo가 setUserInfo로 계속 바뀌기 때문인가. 객체이지만 useState를 통해 바뀌었으므로, 아니 근데 값이 안바뀌었는데 왜 변화처리가 될까
+console.log(userInfo)
+  // useEffect(() => {}, [userInfo]);
 
-  // 로그인 없이 home 접근 방지. navigate를 쓰려면
-  // You should call navigate() in a React.useEffect(), not when your component is first rendered.
-  useEffect(async() => {
-    if (!userInfo) {
-      navigate("/login");
-    }
-  }, []);
   // 새로고침시 login 페이지로 가는 버그생김
 
   return (

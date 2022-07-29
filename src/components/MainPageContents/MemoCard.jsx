@@ -1,7 +1,7 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import CardDetail from "./Card_Detail";
+import CardDetail from "./MemoCard__Detail";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Card = styled.div`
@@ -22,8 +22,8 @@ const Icon = styled.img`
   margin-right: 0.1rem;
   position: relative;
   top: -4px;
-  border-radius:10px;
-  margin-bottom:2px;
+  border-radius: 10px;
+  margin-bottom: 2px;
 `;
 const UserName = styled.div`
   font-size: 0.7rem;
@@ -33,9 +33,7 @@ const MemoCard = ({ card, index, board, boardIndex }) => {
 
   const onCardDetail = () => {
     navigate(`/about/${boardIndex}/${board}/${index}`, { state: { ...card } });
-    {
-      console.log(card);
-    }
+    // console.log(card);
   };
   return (
     <Draggable key={card.id} draggableId={card.id} index={index}>

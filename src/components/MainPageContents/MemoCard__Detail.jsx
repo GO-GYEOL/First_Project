@@ -249,8 +249,8 @@ const CardDetail = () => {
       const JsonComments = JSON.stringify(comments);
       if (JsonA == JsonComments) {
         // 참조형변수는 메모리의 주소가 같냐를 따지기 때문에 객체의 value를 비교하고 싶다면 기본형변수로 만들고 비교해주는 것이 좋다.
-        console.log(a);
-        console.log(comments);
+        // console.log(a);
+        // console.log(comments);
         window.alert("댓글 작성자만 삭제가 가능합니다.");
       } else {
         dataCopy[boardIndex][boardName][cardIndex]["comments"] = a;

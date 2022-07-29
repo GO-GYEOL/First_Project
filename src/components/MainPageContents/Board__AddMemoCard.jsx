@@ -26,17 +26,16 @@ const InputBox = styled.input`
   border: 0px;
 `;
 
-const AddBoxForm = ({ name }) => {
+const BoardAddMemoCard = ({ name }) => {
   const [data, setData] = useState();
   const userInfo = useRecoilValue(loginState);
   useEffect(() => {
     const docs = doc(db, "0718", "cards");
     onSnapshot(docs, (snapshot) => {
-      const nweetArray = snapshot.data();
-      setData(nweetArray.AllBoard);
+      const cloudData = snapshot.data();
+      setData(cloudData.AllBoard);
     });
   }, []);
-
 
   const inputRef = useRef();
   const onAddCard = (event) => {
@@ -53,8 +52,8 @@ const AddBoxForm = ({ name }) => {
             contents: "",
             comments: [],
             uid: userInfo.uid,
-            userName:userInfo.userName,
-            photoURL:userInfo.photoURL
+            userName: userInfo.userName,
+            photoURL: userInfo.photoURL,
           });
         } else return item;
       });
@@ -88,4 +87,4 @@ const AddBoxForm = ({ name }) => {
   );
 };
 
-export default AddBoxForm;
+export default BoardAddMemoCard;

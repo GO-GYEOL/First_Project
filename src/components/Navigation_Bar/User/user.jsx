@@ -40,9 +40,6 @@ const User = (props) => {
         navigate("/login");
         console.log(userInfo);
       })
-      .catch((error) => {
-        // An error happened.
-      });
   };
 
   return (

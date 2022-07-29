@@ -20,6 +20,8 @@ card 추가 기능
 
 recoil로 유저 정보 관리
 
+파이어베이스 onSnapshot
+
 
 (22.07.27)
 App.jsx 
@@ -61,3 +63,27 @@ header.jsx
 // 보드 수정 버튼과 input UI 변경
 
 // 새로고침 시 로그인 풀리는 버그 발생
+
+
+memoCard__Detail.jsx (참조형 변수 비교법)
+// const JsonA = JSON.stringify(a);
+      const JsonComments = JSON.stringify(comments);
+      if (JsonA == JsonComments) {
+        // 참조형변수는 메모리의 주소가 같냐를 따지기 때문에 객체의 value를 비교하고 싶다면 기본형변수로 만들고 비교해주는 것이 좋다.
+        // 객체를 JSON 문법으로 표현된 문자열로 전환했다가(JSON.stringify) 다시 JSON 객체로 바꾸는(JSON.parse) 방법.
+
+
+22.07.29
+board.jsx
+// 스크롤 기능 추가
+
+Home.jsx
+// 로그인 없이 메인페이지 접속 시 로그인 페이지로 돌아갈 수 있도록 페이지 추가
+
+Board__Header.jsx
+=> board이름 변경 시 중복체크 만들다가, 어제 했던 것 똑같이 해야 할 일 생겼다. 
+배열건너뛰기
+어제 한 배열 건너뛰기 기억이 안난다. 찾다가 filter로 바꿨던 것 같기도. 아 그냥 filter로 했었다. 조건에 맞는 애들만 리턴하니까.
+만약 map으로 하게되어서 조건에 맞으면 어쩌구를, 조건에 안맞으면 null을 리턴하도록 한다면 [null, null, 어쩌구] 이런 식으로 된다.
+반면 filter를 이용하면 [어쩌구] 만 되겠다.
+=> 이 부분 생각 좀 많이했다.

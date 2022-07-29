@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { constSelector, useRecoilState } from "recoil";
-import { memoState } from "../../atoms";
-import Board from "./02_board";
+import { memoState } from "../atoms";
+import Board from "../components/MainPageContents/Board";
 import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
-import { db } from "../../Service/fbase";
-import NavigationBar from "../Navigation_Bar/navigation_bar";
-import Footer from "../Footer/footer";
+import { db } from "../Service/fbase";
+import NavigationBar from "../components/Navigation_Bar/navigation_bar";
+import Footer from "../components/Footer/footer";
 
 /* 그냥 파베로 변동될때마다 가져오고, state로 저장한 뒤 화면에 뿌려준다. 
 form button onsubmit시 그냥 adddoc, updatedoc, deletedoc 발생시킨다. 그럼 다시 파베 변동되고 저절로 state로 저장되고 화면에 뿌려진다. */
@@ -60,7 +60,7 @@ const MainContentsPage = (props) => {
   }, []);
 
   const onDragEnd = (props) => {
-    console.log(props);
+    // console.log(props);
     const newMemo = JSON.parse(JSON.stringify(data));
     const { destination, draggableId, source, type } = props;
     const moveFn = () => {
